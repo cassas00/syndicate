@@ -18,8 +18,8 @@ function isNetlifyRuntime(): boolean {
 
 function readFileSegment(): StoredSegment {
   const raw = JSON.parse(fs.readFileSync(FILE_PATH, 'utf-8')) as LiveSegment;
-  const segment = { ...raw };
-  delete segment.summary;
+  const { summary: _summary, ...segment } = raw;
+  void _summary;
   return segment;
 }
 

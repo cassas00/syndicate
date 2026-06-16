@@ -14,7 +14,12 @@ interface Props {
 const { tagline, title, highlight, subtitle, actions = [], compact = false } = Astro.props;
 ---
 
-<section class:list={['syndicate-hero relative not-prose', compact ? 'py-10 md:py-14' : 'py-16 md:py-24 md:-mt-[76px] md:pt-32']}>
+<section
+  class:list={[
+    'syndicate-hero relative not-prose',
+    compact ? 'py-10 md:py-14' : 'py-16 md:py-24 md:-mt-[76px] md:pt-32',
+  ]}
+>
   <div class="syndicate-orb syndicate-orb--red -top-24 -left-16" aria-hidden="true"></div>
   <div class="syndicate-orb syndicate-orb--gold top-10 -right-20" aria-hidden="true"></div>
   <div class="syndicate-orb syndicate-orb--white bottom-0 left-1/3" aria-hidden="true"></div>
@@ -52,17 +57,25 @@ const { tagline, title, highlight, subtitle, actions = [], compact = false } = A
 
       {
         actions.length > 0 && (
-          <div class="syndicate-reveal syndicate-reveal-delay-3 flex flex-col items-center justify-center gap-4 sm:flex-row" data-syndicate-reveal>
-            {
-              actions.map((action) => (
-                <Button {...action} class="syndicate-btn-glow w-full sm:w-auto" />
-              ))
-            }
+          <div
+            class="syndicate-reveal syndicate-reveal-delay-3 flex flex-col items-center justify-center gap-4 sm:flex-row"
+            data-syndicate-reveal
+          >
+            {actions.map((action) => (
+              <Button {...action} class="syndicate-btn-glow w-full sm:w-auto" />
+            ))}
           </div>
         )
       }
     </div>
   </div>
 
-  {!compact && <div class="syndicate-divider mx-auto mt-14 max-w-3xl syndicate-reveal syndicate-reveal-delay-4" data-syndicate-reveal></div>}
+  {
+    !compact && (
+      <div
+        class="syndicate-divider mx-auto mt-14 max-w-3xl syndicate-reveal syndicate-reveal-delay-4"
+        data-syndicate-reveal
+      />
+    )
+  }
 </section>

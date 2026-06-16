@@ -246,7 +246,9 @@
 }
 
 .syndicate-table-wrap tbody tr {
-  transition: background-color 0.25s ease, transform 0.25s ease;
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease;
 }
 
 .syndicate-table-wrap tbody tr:hover {
@@ -261,7 +263,9 @@
   padding: 2px;
   border-radius: 9999px;
   background: linear-gradient(135deg, rgb(230 36 41), rgb(240 193 75));
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
 }
 
 .syndicate-glass:hover .syndicate-avatar-ring {
@@ -272,7 +276,9 @@
 .syndicate-btn-glow {
   position: relative;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .syndicate-btn-glow:hover {

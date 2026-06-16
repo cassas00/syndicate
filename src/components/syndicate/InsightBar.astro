@@ -10,7 +10,11 @@ interface Props {
 const { label, value, max, suffix = '', accent = 'red' } = Astro.props;
 const width = max > 0 ? Math.round((value / max) * 100) : 0;
 const accentClass =
-  accent === 'gold' ? 'syndicate-bar-fill--gold' : accent === 'white' ? 'syndicate-bar-fill--white' : 'syndicate-bar-fill--red';
+  accent === 'gold'
+    ? 'syndicate-bar-fill--gold'
+    : accent === 'white'
+      ? 'syndicate-bar-fill--white'
+      : 'syndicate-bar-fill--red';
 ---
 
 <div class="syndicate-bar">

@@ -71,7 +71,9 @@ const metadata = {
           <div class="grid gap-6 md:grid-cols-[1fr_2fr] md:items-center">
             <div>
               <h3 class="text-xl font-bold uppercase tracking-wide text-neutral-100">{season.label}</h3>
-              <p class="mt-2 text-sm text-muted">{season.summary.betCount} rounds · MVP {mvp} ({formatCurrency(mvpAmount)})</p>
+              <p class="mt-2 text-sm text-muted">
+                {season.summary.betCount} rounds · MVP {mvp} ({formatCurrency(mvpAmount)})
+              </p>
               <p class="mt-1 text-2xl font-bold text-primary">{formatCurrency(season.summary.totalAmount)} profit</p>
             </div>
             <InsightBar
@@ -97,12 +99,22 @@ const metadata = {
         insights.bettors.map((bettor, index) => (
           <GlassCard glow={index === 0 ? 'gold' : undefined} class="text-center">
             <div class="syndicate-avatar-ring mx-auto mb-5 inline-block">
-              <img src={getAsset(`/${bettor.name}.png`)} alt={bettor.name} width="88" height="88" class="rounded-full bg-neutral-900" />
+              <img
+                src={getAsset(`/${bettor.name}.png`)}
+                alt={bettor.name}
+                width="88"
+                height="88"
+                class="rounded-full bg-neutral-900"
+              />
             </div>
             <p class="text-sm font-bold uppercase tracking-[0.25em] text-neutral-400">#{index + 1}</p>
             <h3 class="mt-2 text-2xl font-bold uppercase tracking-wide text-neutral-100">{bettor.name}</h3>
-            <p class="syndicate-stat-value syndicate-stat-value--hero mt-4 text-3xl">{formatCurrency(bettor.totalWon)}</p>
-            <p class="mt-2 text-sm text-muted">{formatPercent(bettor.totalWon, insights.allTime.totalWon)} of all winnings</p>
+            <p class="syndicate-stat-value syndicate-stat-value--hero mt-4 text-3xl">
+              {formatCurrency(bettor.totalWon)}
+            </p>
+            <p class="mt-2 text-sm text-muted">
+              {formatPercent(bettor.totalWon, insights.allTime.totalWon)} of all winnings
+            </p>
 
             <dl class="mt-8 grid grid-cols-2 gap-4 text-left text-sm">
               <div>

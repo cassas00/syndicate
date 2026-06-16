@@ -35,7 +35,12 @@ const endedLabel = season.seasonEndedAt
   <BettorBreakdown summary={season.summary} />
 
   <section class="mx-auto max-w-5xl px-4 pb-16 sm:px-6 syndicate-section-glow">
-    <h2 class="syndicate-reveal mb-8 text-2xl font-bold uppercase tracking-widest text-neutral-100" data-syndicate-reveal>All gameweeks</h2>
+    <h2
+      class="syndicate-reveal mb-8 text-2xl font-bold uppercase tracking-widest text-neutral-100"
+      data-syndicate-reveal
+    >
+      All gameweeks
+    </h2>
     <div class="syndicate-reveal syndicate-reveal-delay-1" data-syndicate-reveal>
       <BetsTable bets={season.bets} roundLabel="Gameweek" />
     </div>

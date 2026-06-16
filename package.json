@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@astrojs/markdown-remark": "^7.2.0",
     "@astrojs/mdx": "^6.0.1",
     "@astrojs/partytown": "^2.1.7",
     "@eslint/js": "^10.0.1",
