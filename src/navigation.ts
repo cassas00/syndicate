@@ -32,6 +32,7 @@ export const footerData = {
         { text: '2025-26 season', href: getPermalink('/seasons/2025-26') },
         { text: '2024-25 season', href: getPermalink('/seasons/2024-25') },
         { text: 'Insights', href: getPermalink('/insights') },
+        { text: 'Admin', href: getPermalink('/admin') },
       ],
     },
   ],
