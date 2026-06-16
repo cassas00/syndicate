@@ -1,0 +1,18 @@
+{
+  "id": "world-cup-2026",
+  "label": "World Cup 2026",
+  "status": "live",
+  "stakePerRound": 30,
+  "summary": {
+    "betCount": 0,
+    "totalAmountWon": 0,
+    "totalSpend": 0,
+    "totalAmount": 0,
+    "totalAmountWonByBettor": {
+      "steven": 0,
+      "luke": 0,
+      "jamie": 0
+    }
+  },
+  "bets": []
+}

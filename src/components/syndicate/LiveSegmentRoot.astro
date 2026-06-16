@@ -1,0 +1,19 @@
+---
+import type { LiveSegment } from '~/types/syndicate';
+
+interface Props {
+  segment: LiveSegment;
+  roundLabel?: string;
+}
+
+const { segment: _segment, roundLabel = 'Round' } = Astro.props;
+void _segment;
+---
+
+<div data-live-segment data-round-label={roundLabel} data-asset-base="">
+  <slot />
+</div>
+
+<script>
+  import '~/scripts/live-segment-client.ts';
+</script>

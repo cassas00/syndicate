@@ -1,0 +1,15 @@
+---
+interface Props {
+  kicker: string;
+  title: string;
+  detail?: string;
+}
+
+const { kicker, title, detail } = Astro.props;
+---
+
+<div class="syndicate-glass syndicate-insight-highlight p-6 md:p-8">
+  <p class="syndicate-kicker mb-3 text-[0.65rem]">{kicker}</p>
+  <p class="syndicate-stat-value syndicate-stat-value--hero text-3xl md:text-4xl">{title}</p>
+  {detail && <p class="mt-3 text-sm text-muted">{detail}</p>}
+</div>

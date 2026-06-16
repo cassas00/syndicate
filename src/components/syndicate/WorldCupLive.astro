@@ -1,0 +1,44 @@
+---
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import Headline from '~/components/ui/Headline.astro';
+import Button from '~/components/ui/Button.astro';
+import BetsTable from '~/components/syndicate/BetsTable.astro';
+import StatTile from '~/components/syndicate/StatTile.astro';
+import type { LiveSegment } from '~/types/syndicate';
+import { formatCurrency } from '~/utils/syndicate';
+import { getPermalink } from '~/utils/permalinks';
+
+interface Props {
+  segment: LiveSegment;
+}
+
+const { segment } = Astro.props;
+---
+
+<WidgetWrapper id="live" containerClass="max-w-6xl syndicate-section-glow">
+  <div class="relative mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+    <div class="syndicate-reveal" data-syndicate-reveal>
+      <Headline
+        tagline="Live now"
+        title={segment.label}
+        subtitle="Current syndicate segment while the World Cup is on."
+      />
+    </div>
+    <span class="syndicate-live syndicate-reveal syndicate-reveal-delay-1" data-syndicate-reveal>Live</span>
+  </div>
+
+  <div class="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <StatTile label="Profit" value={formatCurrency(segment.summary.totalAmount)} liveKey="profit" hero delay={1} />
+    <StatTile label="Won" value={formatCurrency(segment.summary.totalAmountWon)} liveKey="totalWon" delay={2} />
+    <StatTile label="Spend" value={formatCurrency(segment.summary.totalSpend)} liveKey="totalSpend" delay={3} />
+    <StatTile label="Each" value={formatCurrency(segment.summary.totalAmount / 3)} liveKey="each" delay={4} />
+  </div>
+
+  <div class="syndicate-reveal syndicate-reveal-delay-2" data-syndicate-reveal>
+    <BetsTable bets={segment.bets} roundLabel="Round" />
+  </div>
+
+  <div class="mt-10 text-center syndicate-reveal syndicate-reveal-delay-3" data-syndicate-reveal>
+    <Button variant="primary" text="Full World Cup view" href={getPermalink('/world-cup')} class="syndicate-btn-glow" />
+  </div>
+</WidgetWrapper>

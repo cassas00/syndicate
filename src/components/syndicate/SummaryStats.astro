@@ -1,0 +1,22 @@
+---
+import StatTile from '~/components/syndicate/StatTile.astro';
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import type { SeasonSummary } from '~/types/syndicate';
+import { formatCurrency } from '~/utils/syndicate';
+
+interface Props {
+  summary: SeasonSummary;
+}
+
+const { summary } = Astro.props;
+const shareEach = summary.totalAmount / 3;
+---
+
+<WidgetWrapper containerClass="max-w-6xl">
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <StatTile label="Total won" value={formatCurrency(summary.totalAmountWon)} liveKey="totalWon" delay={1} />
+    <StatTile label="Total spend" value={formatCurrency(summary.totalSpend)} liveKey="totalSpend" delay={2} />
+    <StatTile label="Profit" value={formatCurrency(summary.totalAmount)} liveKey="profit" hero delay={3} />
+    <StatTile label="Each" value={formatCurrency(shareEach)} liveKey="each" delay={4} />
+  </div>
+</WidgetWrapper>

@@ -1,0 +1,47 @@
+---
+import type { SeasonSummary } from '~/types/syndicate';
+import { bettors, formatCurrency, formatPercent } from '~/utils/syndicate';
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import Headline from '~/components/ui/Headline.astro';
+import GlassCard from '~/components/syndicate/GlassCard.astro';
+import { getAsset } from '~/utils/permalinks';
+
+interface Props {
+  summary: SeasonSummary;
+}
+
+const { summary } = Astro.props;
+---
+
+<WidgetWrapper containerClass="max-w-5xl syndicate-section-glow">
+  <div class="syndicate-reveal mb-8" data-syndicate-reveal>
+    <Headline title="Bettor breakdown" />
+  </div>
+  <div class="grid gap-6 sm:grid-cols-3">
+    {
+      bettors.map((bettor, index) => (
+        <GlassCard
+          class:list={['text-center syndicate-reveal', `syndicate-reveal-delay-${index + 1}`]}
+          data-syndicate-reveal
+        >
+          <div class="syndicate-avatar-ring mx-auto mb-5 inline-block">
+            <img
+              src={getAsset(`/${bettor}.png`)}
+              alt={bettor}
+              width="80"
+              height="80"
+              class="rounded-full bg-neutral-900"
+            />
+          </div>
+          <h3 class="text-lg font-bold uppercase tracking-widest text-neutral-100">{bettor}</h3>
+          <p class="syndicate-stat-value syndicate-stat-value--hero mt-3 text-3xl" data-live-bettor={bettor}>
+            {formatCurrency(summary.totalAmountWonByBettor[bettor] ?? 0)}
+          </p>
+          <p class="mt-2 text-sm text-muted" data-live-bettor-share={bettor}>
+            {formatPercent(summary.totalAmountWonByBettor[bettor] ?? 0, summary.totalAmountWon)} of winnings
+          </p>
+        </GlassCard>
+      ))
+    }
+  </div>
+</WidgetWrapper>

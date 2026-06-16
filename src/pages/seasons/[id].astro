@@ -1,0 +1,43 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import SyndicateHero from '~/components/syndicate/SyndicateHero.astro';
+import SummaryStats from '~/components/syndicate/SummaryStats.astro';
+import BettorBreakdown from '~/components/syndicate/BettorBreakdown.astro';
+import BetsTable from '~/components/syndicate/BetsTable.astro';
+import { getSeason, getSeasons } from '~/utils/syndicate';
+
+export function getStaticPaths() {
+  return getSeasons().map((season) => ({
+    params: { id: season.id },
+  }));
+}
+
+const { id } = Astro.params;
+const season = getSeason(id!);
+
+if (!season) {
+  return Astro.redirect('/404');
+}
+
+const metadata = {
+  title: season.label,
+};
+
+const endedLabel = season.seasonEndedAt
+  ? `Season ended ${new Date(season.seasonEndedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}.`
+  : 'Completed Premier League syndicate season.';
+---
+
+<Layout metadata={metadata}>
+  <SyndicateHero compact tagline="Archived season" title={season.label} subtitle={endedLabel} />
+
+  <SummaryStats summary={season.summary} />
+  <BettorBreakdown summary={season.summary} />
+
+  <section class="mx-auto max-w-5xl px-4 pb-16 sm:px-6 syndicate-section-glow">
+    <h2 class="syndicate-reveal mb-8 text-2xl font-bold uppercase tracking-widest text-neutral-100" data-syndicate-reveal>All gameweeks</h2>
+    <div class="syndicate-reveal syndicate-reveal-delay-1" data-syndicate-reveal>
+      <BetsTable bets={season.bets} roundLabel="Gameweek" />
+    </div>
+  </section>
+</Layout>

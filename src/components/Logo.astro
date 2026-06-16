@@ -1,0 +1,9 @@
+---
+import { SITE } from 'astrowind:config';
+import { getAsset } from '~/utils/permalinks';
+---
+
+<span class="inline-flex items-center gap-3 self-center ml-2 rtl:ml-0 rtl:mr-2 whitespace-nowrap">
+  <img src={getAsset('/logo.png')} alt="" width="36" height="36" class="rounded-full" />
+  <span class="text-2xl md:text-xl font-bold text-gray-900 dark:text-white">{SITE?.name}</span>
+</span>

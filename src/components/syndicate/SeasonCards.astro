@@ -1,0 +1,73 @@
+---
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import Headline from '~/components/ui/Headline.astro';
+import Button from '~/components/ui/Button.astro';
+import GlassCard from '~/components/syndicate/GlassCard.astro';
+import type { Season } from '~/types/syndicate';
+import { formatCurrency } from '~/utils/syndicate';
+import { getPermalink } from '~/utils/permalinks';
+
+interface Props {
+  seasons: Season[];
+}
+
+const { seasons } = Astro.props;
+---
+
+<WidgetWrapper id="seasons" containerClass="max-w-6xl syndicate-section-glow">
+  <div class="syndicate-reveal mb-10" data-syndicate-reveal>
+    <Headline tagline="Archive" title="Previous seasons" subtitle="Premier League syndicate results from completed campaigns." />
+  </div>
+
+  <div class="grid gap-6 md:grid-cols-2">
+    {
+      seasons.map((season, index) => (
+        <GlassCard
+          glow={index === 0 ? 'gold' : undefined}
+          class:list={['flex h-full flex-col syndicate-reveal', `syndicate-reveal-delay-${Math.min(index + 1, 6)}`]}
+          data-syndicate-reveal
+        >
+          <div class="mb-5 flex items-start justify-between gap-4">
+            <div>
+              <p class="syndicate-kicker mb-2 text-[0.65rem]">Season</p>
+              <h3 class="text-2xl font-bold uppercase tracking-wide text-neutral-100">{season.label}</h3>
+              {
+                season.seasonEndedAt && (
+                  <p class="mt-2 text-sm text-muted">
+                    Ended {new Date(season.seasonEndedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </p>
+                )
+              }
+            </div>
+            <span class="rounded-full border border-neutral-600/80 bg-neutral-900/80 px-3 py-1 text-xs font-bold uppercase tracking-widest text-neutral-400">
+              {season.summary.betCount} rounds
+            </span>
+          </div>
+
+          <dl class="mb-8 grid grid-cols-2 gap-5 text-sm">
+            <div>
+              <dt class="mb-1 text-xs uppercase tracking-widest text-muted">Profit</dt>
+              <dd class="syndicate-stat-value syndicate-stat-value--hero text-2xl">{formatCurrency(season.summary.totalAmount)}</dd>
+            </div>
+            <div>
+              <dt class="mb-1 text-xs uppercase tracking-widest text-muted">Won</dt>
+              <dd class="text-xl font-bold text-neutral-100">{formatCurrency(season.summary.totalAmountWon)}</dd>
+            </div>
+            <div>
+              <dt class="mb-1 text-xs uppercase tracking-widest text-muted">Spend</dt>
+              <dd class="font-semibold text-neutral-200">{formatCurrency(season.summary.totalSpend)}</dd>
+            </div>
+            <div>
+              <dt class="mb-1 text-xs uppercase tracking-widest text-muted">Each</dt>
+              <dd class="font-semibold text-neutral-200">{formatCurrency(season.summary.totalAmount / 3)}</dd>
+            </div>
+          </dl>
+
+          <div class="mt-auto">
+            <Button variant="primary" text={`View ${season.id}`} href={getPermalink(`/seasons/${season.id}`)} class="syndicate-btn-glow w-full sm:w-auto" />
+          </div>
+        </GlassCard>
+      ))
+    }
+  </div>
+</WidgetWrapper>

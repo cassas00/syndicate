@@ -1,0 +1,294 @@
+{
+  "id": "2025-26",
+  "label": "2025-26 season",
+  "archivedFromCommit": null,
+  "seasonEndedAt": "2026-06-11",
+  "summary": {
+    "betCount": 55,
+    "totalAmountWon": 2703.2,
+    "totalSpend": 1650,
+    "totalAmount": 1053.1999999999998,
+    "totalAmountWonByBettor": {
+      "steven": 791,
+      "luke": 982.2,
+      "jamie": 930
+    }
+  },
+  "bets": [
+    {
+      "gameWeek": 1,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 2,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 3,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 4,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 5,
+      "bettor": "luke",
+      "amountWon": 143.2
+    },
+    {
+      "gameWeek": 6,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 7,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 8,
+      "bettor": "luke",
+      "amountWon": 141.53
+    },
+    {
+      "gameWeek": 9,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 10,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 11,
+      "bettor": "luke",
+      "amountWon": 183.47
+    },
+    {
+      "gameWeek": 13,
+      "bettor": "jamie",
+      "amountWon": 128
+    },
+    {
+      "gameWeek": 14,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 15,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 16,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 17,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 18,
+      "bettor": "luke",
+      "amountWon": 120
+    },
+    {
+      "gameWeek": 19,
+      "bettor": "jamie",
+      "amountWon": 131
+    },
+    {
+      "gameWeek": 20,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 21,
+      "bettor": "luke",
+      "amountWon": 120
+    },
+    {
+      "gameWeek": 21,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 22,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 23,
+      "bettor": "luke",
+      "amountWon": 150
+    },
+    {
+      "gameWeek": 24,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 25,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 26,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 27,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 28,
+      "bettor": "steven",
+      "amountWon": 97
+    },
+    {
+      "gameWeek": 29,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 30,
+      "bettor": "jamie",
+      "amountWon": 135
+    },
+    {
+      "gameWeek": 31,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 32,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 33,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 34,
+      "bettor": "steven",
+      "amountWon": 123
+    },
+    {
+      "gameWeek": 35,
+      "bettor": "luke",
+      "amountWon": 124
+    },
+    {
+      "gameWeek": 36,
+      "bettor": "jamie",
+      "amountWon": 124
+    },
+    {
+      "gameWeek": 37,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 38,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 39,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 40,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 41,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 42,
+      "bettor": "jamie",
+      "amountWon": 160
+    },
+    {
+      "gameWeek": 43,
+      "bettor": "steven",
+      "amountWon": 125
+    },
+    {
+      "gameWeek": 44,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 45,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 46,
+      "bettor": "steven",
+      "amountWon": 325
+    },
+    {
+      "gameWeek": 47,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 48,
+      "bettor": "jamie",
+      "amountWon": 252
+    },
+    {
+      "gameWeek": 49,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 50,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 51,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 52,
+      "bettor": "steven",
+      "amountWon": 121
+    },
+    {
+      "gameWeek": 53,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 54,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 55,
+      "bettor": "steven",
+      "amountWon": 0
+    }
+  ]
+}

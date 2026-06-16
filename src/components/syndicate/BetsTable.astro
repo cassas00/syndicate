@@ -1,0 +1,62 @@
+---
+import type { Bet } from '~/types/syndicate';
+import { formatCurrency } from '~/utils/syndicate';
+import { getAsset } from '~/utils/permalinks';
+
+interface Props {
+  bets: Bet[];
+  roundLabel?: string;
+}
+
+const { bets, roundLabel = 'Round' } = Astro.props;
+---
+
+{
+  bets.length === 0 ? (
+    <div data-live-bets-table>
+      <p class="syndicate-glass py-12 text-center text-muted">No rounds recorded yet. The saga begins soon.</p>
+    </div>
+  ) : (
+    <div class="syndicate-table-wrap overflow-x-auto" data-live-bets-table>
+      <table class="min-w-full divide-y divide-neutral-800/80">
+        <thead class="bg-neutral-900/80">
+          <tr>
+            <th class="px-4 py-4 text-left text-xs font-bold uppercase tracking-[0.2em] text-neutral-400">
+              {roundLabel}
+            </th>
+            <th class="px-4 py-4 text-left text-xs font-bold uppercase tracking-[0.2em] text-neutral-400">Bettor</th>
+            <th class="px-4 py-4 text-right text-xs font-bold uppercase tracking-[0.2em] text-neutral-400">Won</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-neutral-800/60">
+          {bets.map((bet, index) => (
+            <tr
+              class="syndicate-reveal"
+              data-syndicate-reveal
+              style={`transition-delay: ${Math.min(index * 40, 400)}ms`}
+            >
+              <td class="px-4 py-4 text-sm font-bold text-neutral-300">{bet.gameWeek}</td>
+              <td class="px-4 py-4">
+                <div class="flex items-center gap-3">
+                  <div class="syndicate-avatar-ring inline-block">
+                    <img
+                      src={getAsset(`/${bet.bettor}.png`)}
+                      alt={bet.bettor}
+                      width="40"
+                      height="40"
+                      class="rounded-full bg-neutral-900"
+                    />
+                  </div>
+                  <span class="font-semibold capitalize tracking-wide text-neutral-200">{bet.bettor}</span>
+                </div>
+              </td>
+              <td class="px-4 py-4 text-right text-sm font-bold text-neutral-100 transition-colors">
+                {formatCurrency(bet.amountWon)}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}

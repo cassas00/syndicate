@@ -1,0 +1,234 @@
+{
+  "id": "2024-25",
+  "label": "2024-25 season",
+  "archivedFromCommit": "0e51b44eabe72a956ee0c4374a6be58fc387c37b",
+  "seasonEndedAt": "2025-08-14",
+  "summary": {
+    "betCount": 43,
+    "totalAmountWon": 1735,
+    "totalSpend": 1290,
+    "totalAmount": 445,
+    "totalAmountWonByBettor": {
+      "luke": 555,
+      "jamie": 170,
+      "steven": 1010
+    }
+  },
+  "bets": [
+    {
+      "gameWeek": 1,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 2,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 3,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 4,
+      "bettor": "luke",
+      "amountWon": 295
+    },
+    {
+      "gameWeek": 5,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 6,
+      "bettor": "steven",
+      "amountWon": 309
+    },
+    {
+      "gameWeek": 7,
+      "bettor": "luke",
+      "amountWon": 260
+    },
+    {
+      "gameWeek": 8,
+      "bettor": "jamie",
+      "amountWon": 170
+    },
+    {
+      "gameWeek": 9,
+      "bettor": "steven",
+      "amountWon": 229
+    },
+    {
+      "gameWeek": 10,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 11,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 12,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 13,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 14,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 15,
+      "bettor": "steven",
+      "amountWon": 99
+    },
+    {
+      "gameWeek": 16,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 17,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 18,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 19,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 20,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 21,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 22,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 23,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 24,
+      "bettor": "steven",
+      "amountWon": 183
+    },
+    {
+      "gameWeek": 25,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 26,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 27,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 28,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 29,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 30,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 31,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 32,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 33,
+      "bettor": "steven",
+      "amountWon": 190
+    },
+    {
+      "gameWeek": 34,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 35,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 36,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 37,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 38,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 39,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 40,
+      "bettor": "luke",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 41,
+      "bettor": "jamie",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 42,
+      "bettor": "steven",
+      "amountWon": 0
+    },
+    {
+      "gameWeek": 43,
+      "bettor": "luke",
+      "amountWon": 0
+    }
+  ]
+}

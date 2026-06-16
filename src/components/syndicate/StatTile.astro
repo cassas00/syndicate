@@ -1,0 +1,18 @@
+---
+interface Props {
+  label: string;
+  value: string;
+  hero?: boolean;
+  delay?: number;
+  liveKey?: string;
+  class?: string;
+}
+
+const { label, value, hero = false, delay = 0, liveKey, class: className = '' } = Astro.props;
+const delayClass = delay > 0 ? `syndicate-reveal-delay-${Math.min(delay, 6)}` : '';
+---
+
+<div class:list={['syndicate-glass p-5 md:p-6 syndicate-reveal', delayClass, className]} data-syndicate-reveal>
+  <p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-neutral-400">{label}</p>
+  <p class:list={['syndicate-stat-value', hero && 'syndicate-stat-value--hero']} data-live-stat={liveKey}>{value}</p>
+</div>

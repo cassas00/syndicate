@@ -1,0 +1,307 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import { getLiveSegment } from '~/utils/syndicate';
+import { bettors } from '~/utils/syndicate';
+
+const segment = getLiveSegment();
+const nextRound = segment.bets.length > 0 ? Math.max(...segment.bets.map((bet) => bet.gameWeek)) + 1 : 1;
+
+const metadata = {
+  title: 'Admin',
+  robots: { index: false, follow: false },
+};
+---
+
+<Layout metadata={metadata}>
+  <main class="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+    <div class="mb-10 text-center">
+      <p class="syndicate-kicker text-muted">Syndicate</p>
+      <h1 class="mt-3 text-3xl font-bold uppercase tracking-widest text-neutral-100">World Cup admin</h1>
+      <p class="mt-3 text-muted">Add or update rounds without redeploying the site.</p>
+    </div>
+
+    <section id="login-panel" class="syndicate-glass rounded-2xl p-6 md:p-8">
+      <h2 class="mb-6 text-lg font-bold uppercase tracking-widest text-neutral-100">Sign in</h2>
+      <form id="login-form" class="space-y-4">
+        <label class="block">
+          <span class="mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-neutral-400">Username</span>
+          <input
+            id="login-username"
+            name="username"
+            type="text"
+            autocomplete="username"
+            class="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-neutral-100 outline-none focus:border-primary"
+            required
+          />
+        </label>
+        <label class="block">
+          <span class="mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-neutral-400">Password</span>
+          <input
+            id="login-password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            class="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-neutral-100 outline-none focus:border-primary"
+            required
+          />
+        </label>
+        <p id="login-error" class="hidden text-sm text-red-400"></p>
+        <button type="submit" class="btn-primary w-full">Sign in</button>
+      </form>
+    </section>
+
+    <section id="admin-panel" class="hidden space-y-8">
+      <div class="syndicate-glass flex items-center justify-between gap-4 rounded-2xl p-6">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.2em] text-neutral-400">Signed in</p>
+          <p class="mt-1 font-semibold text-neutral-100">{segment.label}</p>
+        </div>
+        <button id="logout-button" type="button" class="btn-secondary">Sign out</button>
+      </div>
+
+      <div class="syndicate-glass rounded-2xl p-6 md:p-8">
+        <h2 class="mb-6 text-lg font-bold uppercase tracking-widest text-neutral-100">Add or update round</h2>
+        <form id="bet-form" class="grid gap-4 sm:grid-cols-2">
+          <label class="block sm:col-span-1">
+            <span class="mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-neutral-400">Round</span>
+            <input
+              id="bet-round"
+              name="gameWeek"
+              type="number"
+              min="1"
+              step="1"
+              value={nextRound}
+              class="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-neutral-100 outline-none focus:border-primary"
+              required
+            />
+          </label>
+          <label class="block sm:col-span-1">
+            <span class="mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-neutral-400">Bettor</span>
+            <select
+              id="bet-bettor"
+              name="bettor"
+              class="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 capitalize text-neutral-100 outline-none focus:border-primary"
+              required
+            >
+              {bettors.map((bettor) => <option value={bettor}>{bettor}</option>)}
+            </select>
+          </label>
+          <label class="block sm:col-span-2">
+            <span class="mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-neutral-400">Amount won (£)</span>
+            <input
+              id="bet-amount"
+              name="amountWon"
+              type="number"
+              min="0"
+              step="0.01"
+              value="0"
+              class="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-neutral-100 outline-none focus:border-primary"
+              required
+            />
+          </label>
+          <p id="bet-error" class="hidden text-sm text-red-400 sm:col-span-2"></p>
+          <div class="sm:col-span-2">
+            <button type="submit" class="btn-primary w-full sm:w-auto">Save round</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="syndicate-glass rounded-2xl p-6 md:p-8">
+        <div class="mb-6 flex items-end justify-between gap-4">
+          <h2 class="text-lg font-bold uppercase tracking-widest text-neutral-100">Recorded rounds</h2>
+          <p id="round-count" class="text-sm text-muted"></p>
+        </div>
+        <div id="admin-bets-list" class="space-y-3"></div>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<script>
+  const loginPanel = document.getElementById('login-panel');
+  const adminPanel = document.getElementById('admin-panel');
+  const loginForm = document.getElementById('login-form') as HTMLFormElement | null;
+  const loginError = document.getElementById('login-error');
+  const logoutButton = document.getElementById('logout-button');
+  const betForm = document.getElementById('bet-form') as HTMLFormElement | null;
+  const betError = document.getElementById('bet-error');
+  const adminBetsList = document.getElementById('admin-bets-list');
+  const roundCount = document.getElementById('round-count');
+  const betRoundInput = document.getElementById('bet-round') as HTMLInputElement | null;
+
+  function formatCurrency(amount) {
+    return new Intl.NumberFormat('en-GB', {
+      style: 'currency',
+      currency: 'GBP',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    }).format(amount);
+  }
+
+  function showLogin() {
+    loginPanel?.classList.remove('hidden');
+    adminPanel?.classList.add('hidden');
+  }
+
+  function showAdmin() {
+    loginPanel?.classList.add('hidden');
+    adminPanel?.classList.remove('hidden');
+  }
+
+  function setError(node, message) {
+    if (!node) return;
+    if (!message) {
+      node.textContent = '';
+      node.classList.add('hidden');
+      return;
+    }
+    node.textContent = message;
+    node.classList.remove('hidden');
+  }
+
+  async function checkSession() {
+    const response = await fetch('/api/admin/session');
+    if (!response.ok) {
+      showLogin();
+      return false;
+    }
+
+    const data = await response.json();
+    if (data.authenticated) {
+      showAdmin();
+      await loadBets();
+      return true;
+    }
+
+    showLogin();
+    return false;
+  }
+
+  function suggestNextRound(bets) {
+    if (!betRoundInput || !Array.isArray(bets) || bets.length === 0) {
+      return;
+    }
+
+    const next = Math.max(...bets.map((bet) => bet.gameWeek)) + 1;
+    betRoundInput.value = String(next);
+  }
+
+  function renderBets(segment) {
+    if (!adminBetsList || !roundCount) return;
+
+    const bets = [...segment.bets].sort((a, b) => b.gameWeek - a.gameWeek);
+    roundCount.textContent = `${bets.length} round${bets.length === 1 ? '' : 's'}`;
+
+    if (bets.length === 0) {
+      adminBetsList.innerHTML = '<p class="text-sm text-muted">No rounds yet.</p>';
+      return;
+    }
+
+    adminBetsList.innerHTML = bets
+      .map(
+        (bet) => `
+          <div class="flex items-center justify-between gap-4 rounded-xl border border-neutral-800/80 bg-neutral-950/60 px-4 py-3">
+            <div>
+              <p class="font-semibold text-neutral-100">Round ${bet.gameWeek}</p>
+              <p class="text-sm capitalize text-muted">${bet.bettor} · ${formatCurrency(bet.amountWon)}</p>
+            </div>
+            <button type="button" class="btn-secondary text-sm" data-delete-round="${bet.gameWeek}">Delete</button>
+          </div>
+        `
+      )
+      .join('');
+
+    adminBetsList.querySelectorAll('[data-delete-round]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const gameWeek = button.getAttribute('data-delete-round');
+        if (!gameWeek || !confirm(`Delete round ${gameWeek}?`)) {
+          return;
+        }
+
+        const response = await fetch(`/api/admin/world-cup?gameWeek=${gameWeek}`, {
+          method: 'DELETE',
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          alert(error.error ?? 'Failed to delete round');
+          return;
+        }
+
+        const segment = await response.json();
+        renderBets(segment);
+        suggestNextRound(segment.bets);
+        document.dispatchEvent(new CustomEvent('syndicate:live-refresh'));
+      });
+    });
+  }
+
+  async function loadBets() {
+    const response = await fetch('/api/admin/world-cup');
+    if (!response.ok) {
+      showLogin();
+      return;
+    }
+
+    const segment = await response.json();
+    renderBets(segment);
+    suggestNextRound(segment.bets);
+  }
+
+  loginForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    setError(loginError, '');
+
+    const formData = new FormData(loginForm);
+    const response = await fetch('/api/admin/session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: formData.get('username'),
+        password: formData.get('password'),
+      }),
+    });
+
+    if (!response.ok) {
+      setError(loginError, 'Invalid username or password');
+      return;
+    }
+
+    showAdmin();
+    await loadBets();
+  });
+
+  logoutButton?.addEventListener('click', async () => {
+    await fetch('/api/admin/session', { method: 'DELETE' });
+    showLogin();
+  });
+
+  betForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    setError(betError, '');
+
+    const formData = new FormData(betForm);
+    const response = await fetch('/api/admin/world-cup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        gameWeek: Number(formData.get('gameWeek')),
+        bettor: formData.get('bettor'),
+        amountWon: Number(formData.get('amountWon')),
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      setError(betError, error.error ?? 'Failed to save round');
+      return;
+    }
+
+    const segment = await response.json();
+    renderBets(segment);
+    suggestNextRound(segment.bets);
+    document.dispatchEvent(new CustomEvent('syndicate:live-refresh'));
+  });
+
+  void checkSession();
+</script>

@@ -1,0 +1,175 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import SyndicateHero from '~/components/syndicate/SyndicateHero.astro';
+import StatTile from '~/components/syndicate/StatTile.astro';
+import InsightBar from '~/components/syndicate/InsightBar.astro';
+import InsightHighlight from '~/components/syndicate/InsightHighlight.astro';
+import GlassCard from '~/components/syndicate/GlassCard.astro';
+import { getSyndicateInsights } from '~/utils/insights';
+import { formatCurrency, formatPercent } from '~/utils/syndicate';
+import { getAsset } from '~/utils/permalinks';
+
+const insights = getSyndicateInsights();
+const maxSeasonProfit = Math.max(...insights.seasons.map(({ season }) => season.summary.totalAmount));
+const maxBettorWon = Math.max(...insights.bettors.map((b) => b.totalWon));
+const maxWinRate = Math.max(...insights.bettors.map((b) => b.winRate));
+
+const metadata = {
+  title: 'Insights',
+};
+---
+
+<Layout metadata={metadata}>
+  <SyndicateHero
+    compact
+    tagline="Analytics"
+    title="Syndicate insights"
+    subtitle="Every round, every season, every near-miss — distilled into the numbers that matter."
+  />
+
+  <section class="mx-auto max-w-6xl px-4 pb-8 sm:px-6">
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <StatTile label="All-time profit" value={formatCurrency(insights.allTime.totalProfit)} hero delay={1} />
+      <StatTile label="Total won" value={formatCurrency(insights.allTime.totalWon)} delay={2} />
+      <StatTile label="Rounds played" value={String(insights.allTime.rounds)} delay={3} />
+      <StatTile label="Win rate" value={formatPercent(insights.allTime.wins, insights.allTime.rounds)} delay={4} />
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-8 sm:px-6 syndicate-section-glow">
+    <div class="mb-8 text-center">
+      <p class="syndicate-kicker mb-3">Hall of fame</p>
+      <h2 class="text-3xl font-bold uppercase tracking-wide text-neutral-100">The moments that paid</h2>
+    </div>
+    <div class="grid gap-6 md:grid-cols-3">
+      <InsightHighlight
+        kicker="Biggest haul"
+        title={formatCurrency(insights.allTime.biggestWin.amountWon)}
+        detail={`${insights.allTime.biggestWin.bettor} · GW${insights.allTime.biggestWin.gameWeek} · ${insights.allTime.biggestWin.seasonLabel}`}
+      />
+      <InsightHighlight
+        kicker="Best season"
+        title={insights.allTime.bestSeason.season.label}
+        detail={`${formatCurrency(insights.allTime.bestSeason.season.summary.totalAmount)} profit · MVP ${insights.allTime.bestSeason.mvp}`}
+      />
+      <InsightHighlight
+        kicker="Each takes home"
+        title={formatCurrency(insights.allTime.profitEach)}
+        detail={`From ${formatCurrency(insights.allTime.totalProfit)} shared profit across ${insights.seasons.length} seasons`}
+      />
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+    <div class="mb-8">
+      <p class="syndicate-kicker mb-3">Seasons</p>
+      <h2 class="text-3xl font-bold uppercase tracking-wide text-neutral-100">Campaign comparison</h2>
+    </div>
+    <GlassCard class="space-y-8">
+      {
+        insights.seasons.map(({ season, mvp, mvpAmount }, index) => (
+          <div class="grid gap-6 md:grid-cols-[1fr_2fr] md:items-center">
+            <div>
+              <h3 class="text-xl font-bold uppercase tracking-wide text-neutral-100">{season.label}</h3>
+              <p class="mt-2 text-sm text-muted">{season.summary.betCount} rounds · MVP {mvp} ({formatCurrency(mvpAmount)})</p>
+              <p class="mt-1 text-2xl font-bold text-primary">{formatCurrency(season.summary.totalAmount)} profit</p>
+            </div>
+            <InsightBar
+              label="Profit"
+              value={season.summary.totalAmount}
+              max={maxSeasonProfit}
+              suffix={formatCurrency(season.summary.totalAmount)}
+              accent={index === 0 ? 'gold' : 'red'}
+            />
+          </div>
+        ))
+      }
+    </GlassCard>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-8 sm:px-6 syndicate-section-glow">
+    <div class="mb-8 text-center">
+      <p class="syndicate-kicker mb-3">The trio</p>
+      <h2 class="text-3xl font-bold uppercase tracking-wide text-neutral-100">Bettor leaderboard</h2>
+    </div>
+    <div class="grid gap-6 lg:grid-cols-3">
+      {
+        insights.bettors.map((bettor, index) => (
+          <GlassCard glow={index === 0 ? 'gold' : undefined} class="text-center">
+            <div class="syndicate-avatar-ring mx-auto mb-5 inline-block">
+              <img src={getAsset(`/${bettor.name}.png`)} alt={bettor.name} width="88" height="88" class="rounded-full bg-neutral-900" />
+            </div>
+            <p class="text-sm font-bold uppercase tracking-[0.25em] text-neutral-400">#{index + 1}</p>
+            <h3 class="mt-2 text-2xl font-bold uppercase tracking-wide text-neutral-100">{bettor.name}</h3>
+            <p class="syndicate-stat-value syndicate-stat-value--hero mt-4 text-3xl">{formatCurrency(bettor.totalWon)}</p>
+            <p class="mt-2 text-sm text-muted">{formatPercent(bettor.totalWon, insights.allTime.totalWon)} of all winnings</p>
+
+            <dl class="mt-8 grid grid-cols-2 gap-4 text-left text-sm">
+              <div>
+                <dt class="text-xs uppercase tracking-widest text-muted">Win rate</dt>
+                <dd class="font-bold text-neutral-100">{formatPercent(bettor.wins, bettor.rounds)}</dd>
+              </div>
+              <div>
+                <dt class="text-xs uppercase tracking-widest text-muted">Rounds</dt>
+                <dd class="font-bold text-neutral-100">{bettor.rounds}</dd>
+              </div>
+              <div>
+                <dt class="text-xs uppercase tracking-widest text-muted">Avg win</dt>
+                <dd class="font-bold text-neutral-100">{formatCurrency(bettor.averageWin)}</dd>
+              </div>
+              <div>
+                <dt class="text-xs uppercase tracking-widest text-muted">Dry spell</dt>
+                <dd class="font-bold text-neutral-100">{bettor.longestDrySpell} rounds</dd>
+              </div>
+            </dl>
+
+            <div class="mt-6">
+              <InsightBar
+                label="Lifetime won"
+                value={bettor.totalWon}
+                max={maxBettorWon}
+                suffix={formatCurrency(bettor.totalWon)}
+                accent={index === 0 ? 'gold' : 'white'}
+              />
+            </div>
+            <p class="mt-4 text-xs text-muted">
+              Best: {formatCurrency(bettor.biggestWin.amountWon)} (GW{bettor.biggestWin.gameWeek})
+            </p>
+          </GlassCard>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-8 pb-16 sm:px-6">
+    <div class="mb-8">
+      <p class="syndicate-kicker mb-3">Strike rate</p>
+      <h2 class="text-3xl font-bold uppercase tracking-wide text-neutral-100">Who hits when it counts</h2>
+    </div>
+    <GlassCard class="space-y-6">
+      {
+        insights.bettors.map((bettor, index) => (
+          <InsightBar
+            label={bettor.name}
+            value={bettor.winRate}
+            max={maxWinRate}
+            suffix={`${formatPercent(bettor.wins, bettor.rounds)} · ${bettor.wins}/${bettor.rounds} wins`}
+            accent={index === 0 ? 'gold' : 'red'}
+          />
+        ))
+      }
+    </GlassCard>
+
+    <GlassCard class="mt-8 text-center">
+      <p class="syndicate-kicker mb-3">Live segment</p>
+      <h3 class="text-xl font-bold uppercase tracking-wide text-neutral-100">{insights.liveSegmentLabel}</h3>
+      <p class="mt-3 text-muted">
+        {
+          insights.liveRounds > 0
+            ? `${insights.liveRounds} rounds logged so far.`
+            : 'No World Cup rounds logged yet — the next chapter starts here.'
+        }
+      </p>
+    </GlassCard>
+  </section>
+</Layout>

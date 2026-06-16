@@ -1,0 +1,13 @@
+---
+import { getPermalink } from '~/utils/permalinks';
+---
+
+<div
+  class="syndicate-reveal text-sm hidden md:flex gap-3 overflow-hidden px-4 py-2.5 relative text-ellipsis whitespace-nowrap border-b border-red-900/30 bg-gradient-to-r from-neutral-950 via-red-950/40 to-neutral-950"
+  data-syndicate-reveal
+>
+  <span class="syndicate-live text-[0.65rem] py-1 px-3">Live</span>
+  <a href={getPermalink('/world-cup')} class="self-center font-semibold uppercase tracking-widest text-neutral-200 hover:text-white transition-colors">
+    World Cup 2026 syndicate tracker
+  </a>
+</div>

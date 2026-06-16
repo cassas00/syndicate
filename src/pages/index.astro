@@ -1,0 +1,34 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import SyndicateHero from '~/components/syndicate/SyndicateHero.astro';
+import WorldCupLive from '~/components/syndicate/WorldCupLive.astro';
+import LiveSegmentRoot from '~/components/syndicate/LiveSegmentRoot.astro';
+import SeasonCards from '~/components/syndicate/SeasonCards.astro';
+import { getLiveSegment, getSeasons } from '~/utils/syndicate';
+import { getHashPermalink, getPermalink } from '~/utils/permalinks';
+
+const seasons = getSeasons();
+const liveSegment = getLiveSegment();
+
+const metadata = {
+  title: 'Syndicate',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+  <SyndicateHero
+    tagline="The syndicate"
+    title="best trios in the world"
+    subtitle="Steven, Luke and Jamie's shared accumulator tracker. World Cup 2026 is live now — previous Premier League seasons are archived below."
+    actions={[
+      { variant: 'primary', text: 'World Cup live', href: getPermalink('/world-cup') },
+      { text: 'Previous seasons', href: getHashPermalink('#seasons') },
+    ]}
+  />
+
+  <LiveSegmentRoot segment={liveSegment} roundLabel="Round">
+    <WorldCupLive segment={liveSegment} />
+  </LiveSegmentRoot>
+  <SeasonCards seasons={seasons} />
+</Layout>

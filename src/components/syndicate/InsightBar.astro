@@ -1,0 +1,24 @@
+---
+interface Props {
+  label: string;
+  value: number;
+  max: number;
+  suffix?: string;
+  accent?: 'red' | 'gold' | 'white';
+}
+
+const { label, value, max, suffix = '', accent = 'red' } = Astro.props;
+const width = max > 0 ? Math.round((value / max) * 100) : 0;
+const accentClass =
+  accent === 'gold' ? 'syndicate-bar-fill--gold' : accent === 'white' ? 'syndicate-bar-fill--white' : 'syndicate-bar-fill--red';
+---
+
+<div class="syndicate-bar">
+  <div class="mb-2 flex items-end justify-between gap-4 text-sm">
+    <span class="font-semibold uppercase tracking-widest text-neutral-300">{label}</span>
+    <span class="font-bold text-neutral-100">{suffix}</span>
+  </div>
+  <div class="syndicate-bar-track">
+    <div class={`syndicate-bar-fill ${accentClass}`} style={`width: ${width}%`}></div>
+  </div>
+</div>

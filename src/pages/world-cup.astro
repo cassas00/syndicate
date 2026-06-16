@@ -1,0 +1,41 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import SyndicateHero from '~/components/syndicate/SyndicateHero.astro';
+import SummaryStats from '~/components/syndicate/SummaryStats.astro';
+import BettorBreakdown from '~/components/syndicate/BettorBreakdown.astro';
+import BetsTable from '~/components/syndicate/BetsTable.astro';
+import LiveSegmentRoot from '~/components/syndicate/LiveSegmentRoot.astro';
+import { getLiveSegment } from '~/utils/syndicate';
+
+const segment = getLiveSegment();
+
+const metadata = {
+  title: segment.label,
+};
+---
+
+<Layout metadata={metadata}>
+  <LiveSegmentRoot segment={segment} roundLabel="Round">
+    <SyndicateHero
+      compact
+      tagline="Live segment"
+      title={segment.label}
+      subtitle={`Round-by-round World Cup syndicate results. £${segment.stakePerRound} stake per round.`}
+    />
+
+    <SummaryStats summary={segment.summary} />
+    <BettorBreakdown summary={segment.summary} />
+
+    <section class="mx-auto max-w-5xl px-4 pb-16 sm:px-6 syndicate-section-glow">
+      <h2
+        class="syndicate-reveal mb-8 text-2xl font-bold uppercase tracking-widest text-neutral-100"
+        data-syndicate-reveal
+      >
+        All rounds
+      </h2>
+      <div class="syndicate-reveal syndicate-reveal-delay-1" data-syndicate-reveal>
+        <BetsTable bets={segment.bets} roundLabel="Round" />
+      </div>
+    </section>
+  </LiveSegmentRoot>
+</Layout>
