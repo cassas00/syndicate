@@ -12,8 +12,28 @@ const FILE_PATH = path.join(process.cwd(), 'data/segments/world-cup-2026.json');
 
 type StoredSegment = Omit<LiveSegment, 'summary'>;
 
-function isNetlifyRuntime(): boolean {
-  return process.env.NETLIFY === 'true' || Boolean(process.env.NETLIFY_DEV);
+const DEFAULT_SEGMENT: StoredSegment = {
+  id: 'world-cup-2026',
+  label: 'World Cup 2026',
+  status: 'live',
+  stakePerRound: 30,
+  bets: [],
+};
+
+function canUseBlobs(): boolean {
+  return Boolean(
+    process.env.NETLIFY_BLOBS_CONTEXT ||
+      process.env.NETLIFY_SITE_ID ||
+      (globalThis as { netlifyBlobsContext?: unknown }).netlifyBlobsContext
+  );
+}
+
+function canUseLocalFile(): boolean {
+  try {
+    return fs.existsSync(FILE_PATH);
+  } catch {
+    return false;
+  }
 }
 
 function readFileSegment(): StoredSegment {
@@ -27,6 +47,14 @@ function writeFileSegment(segment: StoredSegment): void {
   fs.writeFileSync(FILE_PATH, `${JSON.stringify(segment, null, 2)}\n`);
 }
 
+function getSeedSegment(): StoredSegment {
+  if (canUseLocalFile()) {
+    return readFileSegment();
+  }
+
+  return DEFAULT_SEGMENT;
+}
+
 async function readBlobSegment(): Promise<StoredSegment | null> {
   const store = getStore(BLOB_STORE);
   return store.get(BLOB_KEY, { type: 'json' });
@@ -38,27 +66,36 @@ async function writeBlobSegment(segment: StoredSegment): Promise<void> {
 }
 
 async function readStoredSegment(): Promise<StoredSegment> {
-  if (isNetlifyRuntime()) {
+  if (canUseBlobs()) {
     const blobSegment = await readBlobSegment();
     if (blobSegment) {
       return blobSegment;
     }
 
-    const seeded = readFileSegment();
+    const seeded = getSeedSegment();
     await writeBlobSegment(seeded);
     return seeded;
   }
 
-  return readFileSegment();
+  if (canUseLocalFile()) {
+    return readFileSegment();
+  }
+
+  return DEFAULT_SEGMENT;
 }
 
 async function writeStoredSegment(segment: StoredSegment): Promise<void> {
-  if (isNetlifyRuntime()) {
+  if (canUseBlobs()) {
     await writeBlobSegment(segment);
     return;
   }
 
-  writeFileSegment(segment);
+  if (canUseLocalFile()) {
+    writeFileSegment(segment);
+    return;
+  }
+
+  throw new Error('World Cup storage is not available in this environment.');
 }
 
 export async function getWorldCupSegment() {

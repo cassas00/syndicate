@@ -20,13 +20,23 @@ function json(data: unknown, status = 200) {
   });
 }
 
+function serverError(error: unknown) {
+  console.error('Admin world cup API failed', error);
+  const message = error instanceof Error ? error.message : 'Internal server error';
+  return json({ error: message }, 500);
+}
+
 export const GET: APIRoute = async ({ request }) => {
   if (!isAdminRequest(request)) {
     return unauthorized();
   }
 
-  const segment = await getWorldCupSegment();
-  return json(segment);
+  try {
+    const segment = await getWorldCupSegment();
+    return json(segment);
+  } catch (error) {
+    return serverError(error);
+  }
 };
 
 export const POST: APIRoute = async ({ request }) => {
@@ -34,35 +44,39 @@ export const POST: APIRoute = async ({ request }) => {
     return unauthorized();
   }
 
-  const body = (await request.json()) as {
-    gameWeek?: number;
-    bettor?: string;
-    amountWon?: number;
-  };
+  try {
+    const body = (await request.json()) as {
+      gameWeek?: number;
+      bettor?: string;
+      amountWon?: number;
+    };
 
-  const gameWeek = Number(body.gameWeek);
-  const bettor = body.bettor?.trim().toLowerCase() ?? '';
-  const amountWon = Number(body.amountWon);
+    const gameWeek = Number(body.gameWeek);
+    const bettor = body.bettor?.trim().toLowerCase() ?? '';
+    const amountWon = Number(body.amountWon);
 
-  if (!Number.isInteger(gameWeek) || gameWeek < 1) {
-    return json({ error: 'Round must be a positive whole number' }, 400);
+    if (!Number.isInteger(gameWeek) || gameWeek < 1) {
+      return json({ error: 'Round must be a positive whole number' }, 400);
+    }
+
+    if (!bettors.includes(bettor as (typeof bettors)[number])) {
+      return json({ error: 'Bettor must be steven, luke, or jamie' }, 400);
+    }
+
+    if (!Number.isFinite(amountWon) || amountWon < 0) {
+      return json({ error: 'Amount won must be zero or greater' }, 400);
+    }
+
+    const segment = await addWorldCupBet({
+      gameWeek,
+      bettor,
+      amountWon,
+    });
+
+    return json(segment);
+  } catch (error) {
+    return serverError(error);
   }
-
-  if (!bettors.includes(bettor as (typeof bettors)[number])) {
-    return json({ error: 'Bettor must be steven, luke, or jamie' }, 400);
-  }
-
-  if (!Number.isFinite(amountWon) || amountWon < 0) {
-    return json({ error: 'Amount won must be zero or greater' }, 400);
-  }
-
-  const segment = await addWorldCupBet({
-    gameWeek,
-    bettor,
-    amountWon,
-  });
-
-  return json(segment);
 };
 
 export const DELETE: APIRoute = async ({ request }) => {
@@ -70,13 +84,17 @@ export const DELETE: APIRoute = async ({ request }) => {
     return unauthorized();
   }
 
-  const url = new URL(request.url);
-  const gameWeek = Number(url.searchParams.get('gameWeek'));
+  try {
+    const url = new URL(request.url);
+    const gameWeek = Number(url.searchParams.get('gameWeek'));
 
-  if (!Number.isInteger(gameWeek) || gameWeek < 1) {
-    return json({ error: 'Round must be a positive whole number' }, 400);
+    if (!Number.isInteger(gameWeek) || gameWeek < 1) {
+      return json({ error: 'Round must be a positive whole number' }, 400);
+    }
+
+    const segment = await deleteWorldCupBet(gameWeek);
+    return json(segment);
+  } catch (error) {
+    return serverError(error);
   }
-
-  const segment = await deleteWorldCupBet(gameWeek);
-  return json(segment);
 };

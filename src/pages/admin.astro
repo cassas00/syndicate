@@ -168,6 +168,19 @@ const metadata = {
     node.classList.remove('hidden');
   }
 
+  async function readJson(response) {
+    const text = await response.text();
+    if (!text) {
+      return { error: 'Empty server response' };
+    }
+
+    try {
+      return JSON.parse(text);
+    } catch {
+      return { error: 'Unexpected server response' };
+    }
+  }
+
   async function checkSession() {
     const response = await fetch('/api/admin/session');
     if (!response.ok) {
@@ -232,12 +245,12 @@ const metadata = {
         });
 
         if (!response.ok) {
-          const error = await response.json();
+          const error = await readJson(response);
           alert(error.error ?? 'Failed to delete round');
           return;
         }
 
-        const segment = await response.json();
+        const segment = await readJson(response);
         renderBets(segment);
         suggestNextRound(segment.bets);
         document.dispatchEvent(new CustomEvent('syndicate:live-refresh'));
@@ -301,12 +314,12 @@ const metadata = {
     });
 
     if (!response.ok) {
-      const error = await response.json();
+      const error = await readJson(response);
       setError(betError, error.error ?? 'Failed to save round');
       return;
     }
 
-    const segment = await response.json();
+    const segment = await readJson(response);
     renderBets(segment);
     suggestNextRound(segment.bets);
     document.dispatchEvent(new CustomEvent('syndicate:live-refresh'));
